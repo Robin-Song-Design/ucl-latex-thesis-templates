@@ -2,19 +2,28 @@
 %  but given that some people needed it, if you need a different degree title 
 %  (e.g. Master of Science, Master in Science, Master of Arts, etc)
 %  uncomment the following 3 lines and set as appropriate (this *has* to be before \maketitle)
-% \makeatletter
-% \renewcommand {\@degree@string} {Master of Things}
-% \makeatother
+\makeatletter
+\renewcommand {\@degree@string} {Master of Science}
+\makeatother
+% Set course title, comment out to go back to default "University College london"
+\makeatletter
+\renewcommand {\@course@title} {Architectural Computation}
+\makeatother
+% Change course title preposition, comment out to go back to default "of"
+\makeatletter
+\renewcommand {\@course@title@preposition} {in}
+\makeatother
 
 % Flags for content selection; 
 % They should be before calls to \maketitle, \makedeclaration etc.
 % If set to true, download EPS file from: https://imagestore.ucl.ac.uk/imagestore/start/ucl-banners/For%20PRINT?authrequest=1&https=1
 \setbool{useuclbanner}{false}
-\uclbannerlocation{images/ucl-banner-a4.eps}
+%\uclbannerlocation{fig/ucl-banner-a4-port-orange-u.eps}
 
-\title{A Thesis Title}
-\author{Author Name}
-\department{Department of Something}
+\title{My Great Title}
+\subtit{A new way of doing things}
+\author{Sherif Tarabishy}
+\department{The Bartlett School of Architecture}
 
 % You can use this for extra information after the boilerplate declaration.
 % Use the \\ macro for new lines. Can be useful if you have to declare
@@ -25,55 +34,57 @@
 \makedeclaration
 
 \begin{abstract} % 300 word limit
-My research is about stuff.
+    My research is about stuff.
 
-It begins with a study of some stuff, and then some other stuff and things.
+    It begins with a study of some stuff, and then some other stuff and things.
 
-There is a 300-word limit on your abstract.
+    There is a 300-word limit on your abstract.
 \end{abstract}
 
-\begin{impactstatement}
+% \begin{impactstatement}
 
-	UCL theses now have to include an impact statement. \textit{(I think for REF reasons?)} The following text is the description from the guide linked from the formatting and submission website of what that involves. (Link to the guide: {\scriptsize \url{http://www.grad.ucl.ac.uk/essinfo/docs/Impact-Statement-Guidance-Notes-for-Research-Students-and-Supervisors.pdf}})
+%     UCL theses now have to include an impact statement. \textit{(I think for REF reasons?)} The following text is the description from the guide linked from the formatting and submission website of what that involves. (Link to the guide: {\scriptsize \url{http://www.grad.ucl.ac.uk/essinfo/docs/Impact-Statement-Guidance-Notes-for-Research-Students-and-Supervisors.pdf}})
 
-\begin{quote}
-The statement should describe, in no more than 500 words, how the expertise, knowledge, analysis,
-discovery or insight presented in your thesis could be put to a beneficial use. Consider benefits both
-inside and outside academia and the ways in which these benefits could be brought about.
+%     \begin{quote}
+%         The statement should describe, in no more than 500 words, how the expertise, knowledge, analysis,
+%         discovery or insight presented in your thesis could be put to a beneficial use. Consider benefits both
+%         inside and outside academia and the ways in which these benefits could be brought about.
 
-The benefits inside academia could be to the discipline and future scholarship, research methods or
-methodology, the curriculum; they might be within your research area and potentially within other
-research areas.
+%         The benefits inside academia could be to the discipline and future scholarship, research methods or
+%         methodology, the curriculum; they might be within your research area and potentially within other
+%         research areas.
 
-The benefits outside academia could occur to commercial activity, social enterprise, professional
-practice, clinical use, public health, public policy design, public service delivery, laws, public
-discourse, culture, the quality of the environment or quality of life.
+%         The benefits outside academia could occur to commercial activity, social enterprise, professional
+%         practice, clinical use, public health, public policy design, public service delivery, laws, public
+%         discourse, culture, the quality of the environment or quality of life.
 
-The impact could occur locally, regionally, nationally or internationally, to individuals, communities or
-organisations and could be immediate or occur incrementally, in the context of a broader field of
-research, over many years, decades or longer.
+%         The impact could occur locally, regionally, nationally or internationally, to individuals, communities or
+%         organisations and could be immediate or occur incrementally, in the context of a broader field of
+%         research, over many years, decades or longer.
 
-Impact could be brought about through disseminating outputs (either in scholarly journals or
-elsewhere such as specialist or mainstream media), education, public engagement, translational
-research, commercial and social enterprise activity, engaging with public policy makers and public
-service delivery practitioners, influencing ministers, collaborating with academics and non-academics
-etc.
+%         Impact could be brought about through disseminating outputs (either in scholarly journals or
+%         elsewhere such as specialist or mainstream media), education, public engagement, translational
+%         research, commercial and social enterprise activity, engaging with public policy makers and public
+%         service delivery practitioners, influencing ministers, collaborating with academics and non-academics
+%         etc.
 
-Further information including a searchable list of hundreds of examples of UCL impact outside of
-academia please see \url{https://www.ucl.ac.uk/impact/}. For thousands more examples, please see
-\url{http://results.ref.ac.uk/Results/SelectUoa}.
-\end{quote}
-\end{impactstatement}
+%         Further information including a searchable list of hundreds of examples of UCL impact outside of
+%         academia please see \url{https://www.ucl.ac.uk/impact/}. For thousands more examples, please see
+%         \url{http://results.ref.ac.uk/Results/SelectUoa}.
+%     \end{quote}
+% \end{impactstatement}
 
 \begin{acknowledgements}
-Acknowledge all the things!
+    Acknowledge all the things!
 \end{acknowledgements}
 
-\setcounter{tocdepth}{2} 
+\setcounter{tocdepth}{2}
 % Setting this higher means you get contents entries for
 %  more minor section headers.
 
 \tableofcontents
 \listoffigures
 \listoftables
+\renewcommand\listoflistingscaption{List of source codes}
+\listoflistings
 

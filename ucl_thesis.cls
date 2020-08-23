@@ -130,6 +130,10 @@
 \newcommand \@master{Master of Philosophy}
 \newcommand \@mres{Master of Research}
 \newcommand \@degree@string{\@doctor}
+\newcommand \@course@title{University College London}
+\newcommand \@course@title@preposition{of}
+
+
 %    \end{macrocode}
 %  The usual structure of class preamble follows.
 %
@@ -409,6 +413,8 @@
 %    \begin{macrocode}
 \def\department#1{\gdef\@department{#1}}
 \def\@department{\@latex@warning@no@line{No \noexpand\department given}}
+\def\subtit#1{\gdef\@subtit{#1}}
+\def\@subtit{\@latex@warning@no@line{No \noexpand\subtit given}}
 %   Allows extra text after the boiler-plate declaration
 \def\extradeclaration#1{\gdef\@extradeclaration{#1}}
 %   Allows using the UCL eps A4 banners on the title page
@@ -437,6 +443,7 @@
     \ifthenelse{\boolean{useuclbanner}}{}{%
     \gdef \@department{}}%
     \gdef \@title{}%
+    \gdef \@subtit{}%
     \let \maketitle = \relax%
 }
 %    \end{macrocode}
@@ -467,7 +474,8 @@
 %%%    \normalsize
 %%%
     \begin{center}%
-        {\huge \bfseries \@title}\\[5em]%
+        {\huge \bfseries \@title}\\[1em]%
+        {\huge \mdseries \@subtit}\\[5em]%
         {\Large \itshape \@author}\\%
     \end{center}%
     \vfill%
@@ -475,8 +483,8 @@
     A dissertation submitted in partial fulfillment \\
     of the requirements for the degree of \\
     \textbf{\@degree@string} \\
-    of \\
-    \textbf{University College London}.
+    \@course@title@preposition \\
+    \textbf{\@course@title}.
     \end{center}%
     \vspace{2em}%
     \begin{center}%

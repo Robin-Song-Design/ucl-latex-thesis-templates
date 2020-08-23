@@ -117,7 +117,7 @@
 %  allows putting full reference lines inline.
 %  See: 
 %   http://tex.stackexchange.com/questions/2905/how-can-i-list-references-from-bibtex-file-in-line-with-commentary
-\usepackage{bibentry} 
+\usepackage{bibentry}
 
 % The isorot package allows you to put things sideways 
 %  (or indeed, at any angle) on a page.
@@ -134,3 +134,24 @@
 %  to check out the etoolbox package -- it defines a few commands
 %  that can make it easier to make commands robust.
 \usepackage{etoolbox}
+\usepackage[inkscapeversion=1]{svg}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{minted}
+\usemintedstyle{tango}
+%\usemintedstyle{bw}
+\renewcommand{\theFancyVerbLine}{\sffamily{\footnotesize\arabic{FancyVerbLine}:}}
+\usepackage{har2nat}
+\usepackage{fancyhdr}
+\setcitestyle{citesep={;}, aysep={,}}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage[autostyle]{csquotes}
+% just for using the warning sign
+\usepackage{fontawesome}
+% to insert verbatim environment that can change font size
+\usepackage{fancyvrb}
+% to get size of current font
+\usepackage{relsize}
