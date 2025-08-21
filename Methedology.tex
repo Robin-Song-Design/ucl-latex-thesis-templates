@@ -1,20 +1,99 @@
-\section{}
+\section{System integration and technology stack}
+
+\subsection{Objectives and Framework }
+This research achieved parametric coupling of Rhino 9's Grasshopper with JuPedSim, using Grasshopper to represent office floor geometry (polylines as point lists) and initial agent positions(points). A Python script will call JuPedSim's API to map the geometry from Rhino to the input for the JuPedSim scene, utilizing a social force model for microscopic simulations within Rhino. 
+\subsection{Technology Stack and Versions}
+Rhino 9 (Grasshopper) + Python (3.13, meeting JuPedSim's compatibility requirements);
+\\JuPedSim (Julich Pedestrian Simulator) and its Social Force Model; 
+\\Data analysis and processing: JupyterLab + Python (Pandas, NumPy, Matplotlib/Seaborn, SQLAlchemy/sqlite3); 
+\\Data storage and playback: Each simulation outputs an SQLite database file for offline playback and statistical analysis. 
+\subsection{Input and Output Description }
+Input: Office geometry (polylines representing contours, doors, corridors, etc.), initial agent positions (Grasshopper point sets), and scene parameters (island table layout, corridor width, number of exits, door widths, etc.). 
+\\Output: Each simulation round outputs the raw trajectory data as a SQLite file, while derived metrics such as speeds, congestion events, and other diagnostics are computed from these trajectories for subsequent analysis. Metadata (version, environment, random seed, etc.) are recorded as part of the analysis workflow.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{puffin}
+    \caption{Data Pipeline}
+    \label{fig:pipeline}
+\end{figure}
+
+\section{Experimental design}
+
+\subsection{Prototype Scales}
+Small prototype \ref{fig:small}: Focus on the preliminary effects of layout on evacuation paths and times, with rapid iteration through smaller geometric dimensions.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Small.jpg}
+    \caption{Small Prototype}
+    \label{fig:small}
+\end{figure}
+\\Big prototype \ref{fig:big}: Introduce higher-level issues such as door width coupling and multi-room nesting, testing the coupling effects at scales closer to actual office spaces.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Big.jpg}
+    \caption{Big Prototype}
+    \label{fig:big}
+\end{figure}
+
+\subsection{Randomness and Replication}
+Each parameter configuration is repeated 5 times, with initial positions randomly sampled from a Grasshopper point set to reduce the impact of randomness on the results.
+
+\subsection{Variable Design}
+Island Table Layout \ref{fig:abc}: Three variants A, B, and C represent the internal furniture configuration's representative parameters.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{abc.png}
+    \caption{Island Table Layout}
+    \label{fig:abc}
+\end{figure}
+
+Corridor Width \ref{fig:corridorwidth}: 0.8 m, 1.2 m, 1.6 m, 2.0 m, 2.4 m (covering key intervals from small to large to facilitate the identification of marginal effects and potential thresholds).
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{WidthCompare.png}
+    \caption{Corridor Width}
+    \label{fig:corridorwidth}
+\end{figure}
+
+Exit Configuration \ref{fig:ExitConfiguration}: Single exit and double exit, comparing the impact of different exit quantities on path formation and congestion.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{abc2.png}
+    \caption{Exit Configuration}
+    \label{fig:ExitConfiguration}
+\end{figure}
+
+Additional Variables for Big Prototype: Door width (Gate Width) ranging from 1.0 m to 1.6 m to explore the sensitivity of early congestion and flow distribution; combinations of room door widths and corridor door widths in multi-room coupling scenarios.
 
 
-\section{Previous Work}
-An important branch of evacuation simulation is the research on physical environmental factors. The key elements of spatial structure include the geometric form of buildings, exit configuration and the distribution of obstacles. The geometric form of buildings involves the shape of rooms, floor height and corridor width, and these parameters directly affect the possibility and efficiency of crowd movement. Exit configuration, including the number, location and width of exits, is a key factor in determining the evacuation speed. In addition, the distribution of obstacles, such as the spatial positions of fixed facilities like tables, chairs and columns, significantly affects the evacuation paths and crowd speeds .
+\section{Agents and Model Settings}
 
-In 2012, Ma et al. conducted experimental research on evacuation in China's skycrappers, focusing on the impact of building physical characteristics on the evacuation process. Peacock and Kuligowski (2004) systematically reviewed occupant movement in buildings and found that physical environment factors, including space configuration, exit placement, and obstacle distribution, significantly affect evacuation efficiency. Koo et al. (2013) compared evacuation strategies in high-rise buildings, particularly examining the paths of disabled individuals under different physical conditions. Their study revealed that the geometry and design of exits directly determine the feasibility and safety of evacuations. In high-density and emergency situations, these physical factors can greatly influence crowd behavior during evacuations. A common conclusion from these studies is that the physical environment is a significant influence on evacuation simulation, necessitating a comprehensive consideration of building shape, exit quantity and location, stair width, and obstacle distribution.
+This section focuses on clearly setting and recording the attributes of agents (pedestrians), the initial distribution, and the key parameters of the Social Force Model (SFM) within the JuPedSim framework, ensuring comparability and repeatability between different configurations.
 
-In research on classrooms and office spaces, while exit design is important, an increasing number of studies highlight the significant impact of internal furniture arrangement, desk layout, and corner configurations on evacuation efficiency. In some situations, these internal layout factors can outweigh the influence of exit width or quantity (Liu Parhizgar, 2018;). Helbing et al. specifically emphasized the considerable effect of obstacles, such as desks in a classroom, on evacuation efficiency. These findings indicate that optimizing layout by adjusting internal environmental parameters can significantly alter crowd path choices and congestion hotspots.
+\subsection{Agent Attributes and Initial Conditions}
 
-\section{Research Gap}
-Despite the extensive research on evacuation simulations, there is still a lack of systematic exploration of how internal layout parameters affect evacuation performance in fixed structural settings. 
+Initial Agent Quantity and Distribution: The total number of agents is set in the Grasshopper/JuPedSim scene input based on the scale of the scenario, with the initial distribution (Grasshopper point set) controlling the initial quantity and spatial distribution.
+\\Initial Position Mapping: The point set of Grasshopper is mapped to the initial coordinates of the agents, ensuring that the randomness of initial positions between different configurations is controllable and that repeated experiments can be replicated.
+\\Goals and Behavioral Tendencies: Defaults are uniformly set, but in scenarios with multiple entrances, agents tend to choose the shortest path.
 
-Firstly, existing studies lack a systematic analysis of how internal layout parameters interact. Most of the studies only focus on single parameter such as number of exits and layout of desks and seats, while ignoring factors including corners, corridor width and door width as well as their interaction, particularly in senarios with multiple exits and neted rooms.
+\subsection{Social Force Model Parameters}
 
-Secondly, there is a lack of research on prototypes with different sizes. The lack of reliable methods for scaling from small and simple spaces to large and complex layout limits the translation of research results into practical applications.
+Model Framework: The built-in Social Force Model of JuPedSim is used as the core microscopic simulation model.
+\\Desired Speed: 0.8 m/s is set as the default value, with sensitivity analysis within a range (e.g., 0.6-1.0 m/s) conducted as needed.
+\\Interaction Force Parameters: These include repulsive forces between agents, repulsive forces against obstacles, and response intensity to queuing and group aggregation. The initial settings adopt the official recommended values from JuPedSim.
+\\Obstacle Handling and Boundary Conditions: The obstacle force scale is set to 1000 to balance the resistance to obstacles in complex scenarios, preventing excessive suppression of agent movement. Boundary conditions follow the wall and exit definitions in the geometric input of the scene.
 
-Third, current research primarily focuses on simple scenarios such as classrooms, while systematic studies on the layout of office spaces are relatively scarce. Unlike traditional scenarios like classrooms, office spaces exhibit a high degree of complexity, including densely populated crowds, diverse furniture configurations, and dynamic layouts. The uniqueness of office spaces lies in the relatively fixed initial positions of personnel and the significant flexibility of furniture arrangements. Therefore, changes in the layout of office spaces may significantly impact evacuation efficiency, making them an ideal subject for evacuation simulation research.
+\section{Data collection and Analysis}
 
-Based on the aforementioned research limitations, the innovation of this study lies in: under the fixed structural constraints of office space scenarios, systematically comparing the evacuation performance of different scales and multiple layout variants, and revealing the coupling effects of door width, corridor width, and exit configuration through quantitative analysis. This research not only provides an actionable method for assessing the safety of office spaces but also offers a new methodological perspective for evacuation simulation studies.
+\subsection{Data Output and Storage}
+Each simulation produces an independent SQLite database file, recording agent trajectories, speeds, positions, and scene metadata for easy playback and offline analysis.
+\subsection{Data Reading and Processing}
+Use JupyterLab and Python to read SQLite files (sqlite3), organizing the data into an analyzable structure (DataFrame), and aggregating and statistics on time steps, agent attributes, congestion indicators, etc.
+\subsection{Indicators}
+Primary indicators: Total Evacuation Time (TET), Average Path Length, Path Distribution Characteristics, Congestion Hotspot Distribution (Heatmap/Density Map).
+\\Secondary indicators: Path Formation Patterns (Single Lane Flow, Arch-Shaped, Bottleneck Queueing), Variance of Repeated Intervals, Path Diversity, etc.
+\subsection{Statistical Analysis}
+For different layouts, corridor widths, exit configurations, and door widths, use ANOVA, t-tests, or non-parametric methods for comparison; analyze interactions between variables (significance of interaction terms) and potential nonlinear thresholds.
+\\Use regression analysis/generalized linear models to assess the coupling effects of variables such as door width, corridor width, and number of exits on the intensity of their impact on evacuation time and congestion distribution.
+\subsection{Results Presentation and Visualization}
+Create path density maps, histograms of evacuation time distributions, heatmaps of congestion hotspots, and comparative bar charts under different configurations. Combine with example trajectory playback to demonstrate path evolution and congestion points in specific scenarios.
