@@ -20,7 +20,7 @@ Input: Office geometry (polylines representing contours, doors, corridors, etc.)
 \section{Experimental design}
 
 \subsection{Prototype Scales}
-Small prototype \ref{fig:small}: Focus on the preliminary effects of layout on evacuation paths and times, with rapid iteration through smaller geometric dimensions.
+Small prototype \ref{fig:small}: Focus on the preliminary effects of layout on evacuation paths and times, with rapid iteration through smaller geometric dimensions. To eliminate the influence of multiple corridors, we extended the bottom wall to the leftmost and bottommost sides, keeping only the Main corridor while controlling its width.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Small.jpg}
@@ -38,7 +38,7 @@ Small prototype \ref{fig:small}: Focus on the preliminary effects of layout on e
 \subsection{Randomness and Replication}
 Each parameter configuration is repeated 5 times, with initial positions randomly sampled from a Grasshopper point set to reduce the impact of randomness on the results.
 
-\subsection{Variable Design}
+\subsection{Small Prototype Variables}
 Island Table Layout \ref{fig:abc}: Three variants A, B, and C represent the internal furniture configuration's representative parameters.
 \begin{figure}[h]
     \centering
@@ -47,7 +47,7 @@ Island Table Layout \ref{fig:abc}: Three variants A, B, and C represent the inte
     \label{fig:abc}
 \end{figure}
 
-Corridor Width \ref{fig:corridorwidth}: 0.8 m, 1.2 m, 1.6 m, 2.0 m, 2.4 m (covering key intervals from small to large to facilitate the identification of marginal effects and potential thresholds).
+Corridor Width \ref{fig:corridorwidth}: 0.8 m,1.0m, 1.2 m, 1.4m, 1.6 m, 1.8m, 2.0 m, 2.2m, 2.4 m to explore the sensitivity of corridor width on path formation and congestion.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{WidthCompare.png}
@@ -63,8 +63,25 @@ Exit Configuration \ref{fig:ExitConfiguration}: Single exit and double exit, com
     \label{fig:ExitConfiguration}
 \end{figure}
 
-Additional Variables for Big Prototype: Door width (Gate Width) ranging from 1.0 m to 1.6 m to explore the sensitivity of early congestion and flow distribution; combinations of room door widths and corridor door widths in multi-room coupling scenarios.
-
+\subsection{Big Prototype Variables}
+We firstly conducted a primitive simulation on the original big prototype. And then we designed two main variable groups based on the primitive simulation results:
+\\
+Gate width before the exit(the bottleneck) \ref{fig:4ExitsGate}:
+\(g\in[1.0,1.6]\text{m}\) is to assess sensitivity of early queuing, discharge rate, and lane merging.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]
+    {trajectory_overlay_layout_4ExitsGate.png}
+    \caption{Change of the gates width before the exits}
+    \label{fig:4ExitsGate}
+\end{figure}
+\\Room-Corridor Coupling: According to the primitive simulation \ref{fig:bigprimitive}, with red lines in the figure representing agent trajectories from all the five runs, the trajectories show convergence into three main corridor segments: corridor a (upper), corridor b (lower-left), and corridor c (lower-right). To quantify the combined effects of "room entrance(blue) and corridor gate(red) width" on the flow distribution and congestion of these main passages, we conducted a full factorial cross-experiment using room door width and corridor gate width entering a/b/c as core independent variables: room door width and gate width in range of {1.0, 1.2, 1.4, 1.6}m. For each combination, we evaluated its impact on early queuing, throughput capacity, and the merging and conflict patterns of the three corridors. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{trajectory_overlay_layout_CorridorAnalysis_Basic.png}
+    \caption{Trajectories on the original big prototype and main corridor segments}
+    \label{fig:bigprimitive}
+\end{figure}
 
 \section{Agents and Model Settings}
 
@@ -89,11 +106,19 @@ Model Framework: The built-in Social Force Model of JuPedSim is used as the core
 Each simulation produces an independent SQLite database file, recording agent trajectories, speeds, positions, and scene metadata for easy playback and offline analysis.
 \subsection{Data Reading and Processing}
 Use JupyterLab and Python to read SQLite files (sqlite3), organizing the data into an analyzable structure (DataFrame), and aggregating and statistics on time steps, agent attributes, congestion indicators, etc.
+
 \subsection{Indicators}
-Primary indicators: Total Evacuation Time (TET), Average Path Length, Path Distribution Characteristics, Congestion Hotspot Distribution (Heatmap/Density Map).
-\\Secondary indicators: Path Formation Patterns (Single Lane Flow, Arch-Shaped, Bottleneck Queueing), Variance of Repeated Intervals, Path Diversity, etc.
-\subsection{Statistical Analysis}
-For different layouts, corridor widths, exit configurations, and door widths, use ANOVA, t-tests, or non-parametric methods for comparison; analyze interactions between variables (significance of interaction terms) and potential nonlinear thresholds.
-\\Use regression analysis/generalized linear models to assess the coupling effects of variables such as door width, corridor width, and number of exits on the intensity of their impact on evacuation time and congestion distribution.
+\subsubsection{Primary Indicators}
+Total Evacuation Time (TET): The overall comparison of evacuation performance under various configurations, which can be presented by evacuation time tables and line charts.
+\\
+Path Distribution Characteristics: Visualized through trajectory patterns in speed-trajectory diagrams.
+\\
+Congestion Hotspot Distribution (Hot Zones/Density): The location and extent of low-speed clustering and congestion areas in speed-trajectory diagrams, which equivalently display congestion hotspots and their migration patterns.
+\\
+\subsubsection{Secondary Indicators}
+Path Formation Patterns: Identification of single-lane and double-lanes flow, lane convergence, bottleneck queuing patterns, and their locations based on the trajectory morphology analysis.
+\\
+Repeated Interval Fluctuation (Robustness): Line overlap/error band performance across multiple runs under identical parameters, expressed as minimum-maximum ranges or mean ± deviation to indicate fluctuation levels.
+
 \subsection{Results Presentation and Visualization}
-Create path density maps, histograms of evacuation time distributions, heatmaps of congestion hotspots, and comparative bar charts under different configurations. Combine with example trajectory playback to demonstrate path evolution and congestion points in specific scenarios.
+This study uses Total Evacuation Time (TET) as the primary evaluation metric. For each parameter level (such as door width, corridor width, and exit configuration), we calculate the mean TET and fluctuation range from multiple independent simulations, and conduct direct comparisons and ranking based on these results. To identify potential threshold effects, we observe slope changes in evacuation time line graphs, record parameter intervals where significant inflection points or plateau segments occur, and select representative parameter points to compare with velocity-trajectory diagrams to explain the mechanistic differences in "convergence-merging-queuing" patterns as parameters vary. To ensure the stability of conclusions, each parameter combination incorporates randomized agent initial positions with five repeated experiments.
