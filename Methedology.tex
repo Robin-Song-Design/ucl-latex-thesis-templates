@@ -1,11 +1,11 @@
 \section{System integration and technology stack}
 
 \subsection{Objectives and Framework }
-This research achieved parametric coupling of Rhino 9's Grasshopper with JuPedSim, using Grasshopper to represent office floor geometry (polylines as point lists) and initial agent positions(points). A Python script will call JuPedSim's API to map the geometry from Rhino to the input for the JuPedSim scene, utilizing a social force model for microscopic simulations within Rhino. 
+This research achieved parametric coupling of Rhino 9 WIP's Grasshopper with JuPedSim, using Grasshopper to represent office floor geometry (polylines as point lists) and initial agent positions(points). A Python script will call JuPedSim's API to map the geometry from Rhino to the input for the JuPedSim scene, utilizing a social force model for microscopic simulations within Rhino. 
 \subsection{Technology Stack and Versions}
-Rhino 9 (Grasshopper) + Python (3.13, meeting JuPedSim's compatibility requirements);
+Rhino 9 WIP (Grasshopper) + Python (3.13, intergrated in Rhino 9 WIP, meeting JuPedSim's compatibility requirements);
 \\JuPedSim (Julich Pedestrian Simulator) and its Social Force Model; 
-\\Data analysis and processing: JupyterLab + Python (Pandas, NumPy, Matplotlib/Seaborn, SQLAlchemy/sqlite3); 
+\\Data analysis and processing: JupyterLab + Python (Pandas, NumPy, Matplotlib, Sqlite3); 
 \\Data storage and playback: Each simulation outputs an SQLite database file for offline playback and statistical analysis. 
 \subsection{Input and Output Description }
 Input: Office geometry (polylines representing contours, doors, corridors, etc.), initial agent positions (Grasshopper point sets), and scene parameters (island table layout, corridor width, number of exits, door widths, etc.). 

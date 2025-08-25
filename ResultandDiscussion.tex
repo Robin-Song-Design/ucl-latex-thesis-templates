@@ -1,5 +1,4 @@
 \section{Small Prototype}
-
 \subsection{Overview}
 \begin{figure}[h]
     \centering
@@ -74,10 +73,182 @@ Under single exit condition, Layout A \ref{fig:speed_trajectory_layout_A} can ea
 \end{figure}
 
 \section{Big Prototype}
+Based on the results from the Small Prototype, evacuation time shows significant correlation with the convergence intensity at the end of main corridors, as well as mutual interference among crowds at intersections and merging points. Therefore, we introduce the Big Prototype to test these mechanisms in larger spaces and crowd scales, to examine their persistence and increase effects at the macro level, with focus on identifying the gates width and geometric threshold ranges that can most significantly infuence the total evacuation time.
+\subsection{Effect of Bottleneck Width(Gate Width Before Exit)}
+In the Big Prototype scenario, according to the figure \ref{fig:tet_vs_Bottleneck}, as the exit bottleneck width gradually increased from 1.0 m to 1.6 m, the Total Evacuation Time (TET) showed a continuous declining monotonic trend. The readings approximately showed 85 s at 1.0 m, 75 s at 1.2 m, 73 s at 1.4 m, and 70 s at 1.6 m. The most significant improvement occurred in the interval from 1.0 m to 1.2 m, where TET decreased by approximately 10 s with nearly a twelve percent relative improvement; thereafter, continued widening only brought gradual improvements, with approximately 2 s reduction in the 1.2 m to 1.4 m interval and approximately 3 s reduction in the 1.4 m to 1.6 m interval. Error bars showed that the variability of repeated runs was greater at narrower exits and significantly converged at wider exits, indicating that the system was more stable at larger widths. The slope of the line showed a noticeable change around 1.2 m, suggesting that this point may be the threshold interval for transitioning from long queue formation to short-term congestion, beyond which marginal benefits gradually diminish.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{tet_vs_Bottleneck.png}
+    \caption{TET vs Bottleneck Width}
+    \label{fig:tet_vs_Bottleneck}
+\end{figure}
 
-\subsection{Effect of Gate Width Before Exit}
-Gate Width vs TET curves; focus on edge cases in narrow corridors.
-\\Congestion hotspot changes with gate width.
-\subsection{Coupling Effect of Corridor Entrance and Passage Width}
-Interaction heatmaps of corridor entrance width x passage width on TET and congestion.
-\\Marginal effects demonstrate where coupling amplifies or mitigates congestion.
+The speed trajectory diagrams are consistent with the aforementioned trends. At the bottleneck width of 1.0 m \ref{fig:speed_trajectory_layout_1.0m}, the low-speed red zones significantly extend backward, showing queuing phenomena. Due to the queuing phenomenon, agents exhibit obvious convergence behavior at an early stage, beginning to merge lanes with frequent lateral interactions and substantial velocity fluctuations. When the width increases to 1.2 m \ref{fig:speed_trajectory_layout_1.2m}, the low-speed zone noticeably diminishs and becomes concentrated within several meters of the room exits, as well as the merging points be closer to the room exit. The agents' queuing phenomenon visibly disappears during actual simulation observation. On expansion to 1.4 m \ref{fig:speed_trajectory_layout_1.4m} and 1.6 m \ref{fig:speed_trajectory_layout_1.6m} , the low-speed zone continues to diminish and remains close to the doorway, with only brief delays occurring during peak arrival periods, more uniform velocity distribution, and reduced lateral conflicts. The multiple simulations show that the main corridor and overall paths leading to each exit remain consistent, while width variations not triggering large-scale route diversions. The most significant differences are concentrated in the flow microstructure within the final several meters of the exit area.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{speed_trajectory_Exit_width_1.0m.png}
+    \caption{Speed and Trajectories for 1.0m Bottleneck Width}
+    \label{fig:speed_trajectory_layout_1.0m}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{speed_trajectory_Exit_width_1.2m.png}
+    \caption{Speed and Trajectories for 1.2m Bottleneck Width}
+    \label{fig:speed_trajectory_layout_1.2m}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{speed_trajectory_Exit_width_1.4m.png}
+    \caption{Speed and Trajectories for 1.4m Bottleneck Width}
+    \label{fig:speed_trajectory_layout_1.4m}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{speed_trajectory_Exit_width_1.6m.png}
+    \caption{Speed and Trajectories for 1.6m Bottleneck Width}
+    \label{fig:speed_trajectory_layout_1.6m}
+\end{figure}
+
+The overlapping trajectories illustrate that the main path remains relatively stable across all widths, with only slight differences showed up in the congestion before the exit. Corresponding to the performance of TET error bars, the run results under wider gate conditions are more concentrated, indicating that intermittent congestion in the exit vicinity is weakened, system behavior becomes more predictable, and the consistency of repeated experiments is also improved.
+
+Based on the comprehensive evidence from both TET curves and velocity trajectory analysis, the main conclusions can be summarized in the following narrative. The most significant performance improvement occurred when increasing the bottleneck width from 1.0 m to 1.2 m, during which the queuing phenomenom disppeared, and the merging points approached the exit. Further widening to 1.4 m and 1.6 m continued to reduce TET, but with smaller improvements, mainly manifesting as further reduction of short-term low-speed conditions near the exit line.  These results provide direct support for subsequent design recommendations, with specific conclusions and suggestions to be presented in the Conclusion section.
+
+\subsection{Coupling Effect of Corridor Entrance and Passage Gate Width}
+Based on the experiments described in the last section, we selected 1.2m under simulated stable conditions as the standard bottleneck width parameter to test the coupling effect of room door width and corridor gate width, in order to minimize the conflicts and interference caused by bottlenecks as much as possible, thereby improving the system's robustness and accuracy.
+
+According to the heat maps \ref{fig:tet_vs_room_corridor_coupling}, The horizontal axis represents corridor gate width, and the vertical axis represents room door width, with both parameters taking values of 1.0, 1.2, 1.4, and 1.6 m. For each combination, multiple independent simulations were conducted while maintaining agents numbers, layout, and model parameters. The mean and standard deviation of total evacuation time(TET) were calculated and presented as the color variation.
+
+Among all combinations, the shortest TET was 69.7 s, which occurs when corridor width is 1.4m and room door width is 1.2m. The longest TET was 89.5 s, showing when corridor width is 1.0m and room door width is 1.4m. When corridor gate width increased to 1.4 m and above, the TET for all combinations clearly converged to approximately 70-72 s, with standard deviations generally decreasing to about 1-2 s, indicating that the system is getting stable. Especially significant is that when the corridor gates were narrow (1.0 or 1.2 m), increasing room door width alone significantly slowed evacuation time. This phenomenon is consistent with merging conflicts and queue backtracking observed in speed-trajectory diagrams, and this mechanism will be further explained in conjunction with speed-trajectory diagrams in subsequent paragraphs.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{tet_seaborn_heatmap_multiroom.png}
+    \caption{TET vs Room-Corridor Coupling}
+    \label{fig:tet_vs_room_corridor_coupling}
+\end{figure}
+
+\begin{figure} [H]
+    \centering
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]
+        {speed_trajectory_MultiRoom_width_1.0_1.0.png}
+        \caption{Width Combo 1.0m and 1.0m}
+        \label{fig:width_combo_1.0_1.0m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.0_1.2.png}
+        \caption{Width Combo 1.0m and 1.2m}
+        \label{fig:width_combo_1.0_1.2m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.0_1.4.png}
+        \caption{Width Combo 1.0m and 1.4m}
+        \label{fig:width_combo_1.0_1.4m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.0_1.6.png}
+        \caption{Width Combo 1.0m and 1.6m}
+        \label{fig:width_combo_1.0_1.6m}
+    \end{subfigure}
+
+    \caption{Speed and Trajectories for Room Door Width 1.0m}
+    \label{fig:width_combo_1.0_x}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.2_1.0.png}
+        \caption{Width Combo 1.2m and 1.0m}
+        \label{fig:width_combo_1.2_1.0m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.2_1.2.png}
+        \caption{Width Combo 1.2m and 1.2m}
+        \label{fig:width_combo_1.2_1.2m}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.2_1.4.png}
+        \caption{Width Combo 1.2m and 1.4m}
+        \label{fig:width_combo_1.2_1.4m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.2_1.6.png}
+        \caption{Width Combo 1.2m and 1.6m}
+        \label{fig:width_combo_1.2_1.6m}
+    \end{subfigure}
+
+    \caption{Speed and Trajectories for Room Door Width 1.2m}
+    \label{fig:width_combo_1.2_x}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+        \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.4_1.0.png}
+        \caption{Width Combo 1.4m and 1.0m}
+        \label{fig:width_combo_1.4_1.0m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.4_1.2.png}
+        \caption{Width Combo 1.4m and 1.2m}
+        \label{fig:width_combo_1.4_1.2m}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.4_1.4.png}
+        \caption{Width Combo 1.4m and 1.4m}
+        \label{fig:width_combo_1.4_1.4m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.4_1.6.png}
+        \caption{Width Combo 1.4m and 1.6m}
+        \label{fig:width_combo_1.4_1.6m}
+    \end{subfigure}
+    
+    \caption{Speed and Trajectories for Room Door Width 1.4m}
+    \label{fig:width_combo_1.4_x}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+        \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.6_1.0.png}
+        \caption{Width Combo 1.6m and 1.0m}
+        \label{fig:width_combo_1.6_1.0m}
+    \end{subfigure}
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.6_1.2.png}
+        \caption{Width Combo 1.6m and 1.2m}
+        \label{fig:width_combo_1.6_1.2m}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.6_1.4.png}
+        \caption{Width Combo 1.6m and 1.4m}
+        \label{fig:width_combo_1.6_1.4m}
+    \end{subfigure}
+        \begin{subfigure}[b]{.45\linewidth}
+        \includegraphics[width=\linewidth]{
+            speed_trajectory_MultiRoom_width_1.6_1.6.png}
+        \caption{Width Combo 1.6m and 1.6m}
+        \label{fig:width_combo_1.6_1.6m}
+    \end{subfigure}
+
+    \caption{Speed and Trajectories for Room Door Width 1.6m}
+    \label{fig:width_combo_1.6_x}
+\end{figure}
