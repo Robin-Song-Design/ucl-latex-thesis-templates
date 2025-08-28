@@ -1,18 +1,70 @@
-\section{System integration and technology stack}
+\section{Platforms and Models}
+\subsection{JuPedSim and Social Force Model}
+JuPedSim \cite{chraibiJuPedSim2025} is an open-source software framework for pedestrian dynamics and personnel evacuation simulation, aiming to study the movement and evacuation behaviors of people in the built environment through computer simulation. This tool takes "self-driven multi-agent system" as its core concept, modeling each pedestrian as an independent agent. The agents follow a set of rules in a given scene to determine their own movement path, speed and interaction behavior, thereby presenting phenomena such as flow, congestion, queuing and path selection at the group level at the macro level. 
 
-\subsection{Objectives and Framework }
-This research achieved parametric coupling of Rhino 9 WIP's Grasshopper with JuPedSim, using Grasshopper to represent office floor geometry (polylines as point lists) and initial agent positions(points). A Python script will call JuPedSim's API to map the geometry from Rhino to the input for the JuPedSim scene, utilizing a social force model for microscopic simulations within Rhino. 
-\subsection{Technology Stack and Versions}
-Rhino 9 WIP (Grasshopper) + Python (3.13, intergrated in Rhino 9 WIP, meeting JuPedSim's compatibility requirements);
-\\JuPedSim (Julich Pedestrian Simulator) and its Social Force Model; 
-\\Data analysis and processing: JupyterLab + Python (Pandas, NumPy, Matplotlib, Sqlite3); 
-\\Data storage and playback: Each simulation outputs an SQLite database file for offline playback and statistical analysis. 
+JuPedSim is assembled with pedestrian dynamics models such as the classic Social Force Model. The model defines three forces that influence pedestrian movement: the driving force, the repulsive force between pedestrians, and the repulsive force from obstacles. The driving force represents the agent's desire to reach a target position at a certain speed, while the repulsive force is caused by the interaction between the individuals and causes them to avoid each other in order to avoid collisions.The obstacle force acts in a similar way to the repulsive force to avoid collisions with obstacles.
+
+The fundamental principle can be expressed by the following equation:
+\begin{equation}
+    m_i\underbrace{\frac{d\boldsymbol{v}_i}{dt}}_{\text{Acceleration}} = \underbrace{m_i \frac{\boldsymbol{v}_i^0(t)\boldsymbol{e}_i^0(t) - \boldsymbol{v}_i(t)}{\tau_i}}_{\text{Driving Force}} + \underbrace{\sum_{j(\neq i)} f_{ij} + \sum_W f_{iW}}_{\text{Interaction Forces}}
+\end{equation}
+
+Where \(m_i\) is the mass of pedestrian \(i\), \(\boldsymbol{v}_i(t)\) is the current velocity, \(\boldsymbol{v}_i^0(t)\) is the desired speed, \(\boldsymbol{e}_i^0(t)\) is the desired direction, and \(\tau_i\) is the relaxation time. The terms \(f_{ij}\) and \(f_{iW}\) represent the repulsive forces from other pedestrians and obstacles, respectively.
+
+Specifically, the repulsive force between pedestrians \(f_{ij}\) can be expressed as:
+\begin{equation}
+    f_{ij}^{repulsive} = \underbrace{A_i \exp\left(\frac{r_{ij} - d_{ij}}{B_i}\right) \mathbf{n}_{ij} + k g(r_{ij} - d_{ij}) \mathbf{n}_{ij}}_{\text{Pushing}} + \underbrace{\kappa g(r_{ij} - d_{ij}) \Delta v_{ji}^t \mathbf{t}_{ij}}_{\text{Friction}}
+\end{equation}
+
+Where \(A_i\) and \(B_i\) are constants representing the strength and range of the repulsive force, \(r_{ij}\) is the sum of the radii of pedestrians \(i\) and \(j\), \(d_{ij}\) is the distance between them, \(\mathbf{n}_{ij}\) is the unit vector pointing from pedestrian \(j\) to \(i\), \(\mathbf{t}_{ij}\) is the tangential unit vector, \(k\) and \(\kappa\) are constants related to body compression and friction, and \(g(x)\) is a function that equals \(x\) if \(x > 0\) and 0 otherwise.
+
+The obstacle force from  \(f_{iW}\) is similarly defined as:
+\begin{equation}
+    f_{iW}^{obstacle} = \underbrace{A_i \exp\left(\frac{r_i - d_{iW}}{B_i}\right) \mathbf{n}_{iW} + k g(r_i - d_{iW}) \mathbf{n}_{iW}}_{\text{Pushing}} + \underbrace{\kappa g(r_i - d_{iW}) (\mathbf{v}_i \cdot \mathbf{t}_{iW}) \mathbf{t}_{iW}}_{\text{Friction}}
+\end{equation}
+
+Where \(r_i\) is the radius of pedestrian \(i\), \(d_{iW}\) is the distance to the obstacle, \(\mathbf{n}_{iW}\) and \(\mathbf{t}_{iW}\) are the normal and tangential unit vectors relative to the obstacle.
+
+The velocity can be updated using the following equation:
+\begin{equation}
+    \boldsymbol{v}_{new} = \boldsymbol{v}_i(t) + \frac{d\boldsymbol{v}_i}{dt} \Delta t
+\end{equation}
+
+From the above equations, it can be seen that the velocity of each agents is influenced by its own driving force, as well as the pushing forces and fricional forces with other pedestrians and obstacles. 
+
+\subsection{Rhino3D and Grasshopper}
+Rhino3D \cite{RhinoRhinoceros3D} (also known as Rhino or Rhinoceros3D) is a 3D modeling software developed by Robert McNeel Associates, widely used in architecture, industrial design, and many other fields. Grasshopper is a visual programming language and environment integrated into Rhino, allowing users to create complex parametric models through a node-based interface.
+
+The study's modeling and simulation workflow are conducted in Rhino 9 WIP, using Rhino as the geometry and initial agents placement environment \ref{fig:rhinoandgrasshopper}. Grasshopper serves as the parametric front-end to drive the simulations, passing geometric inputs (polylines, doors, corridors, etc.) as point lists to the agent-based simulation instance.
+
+Grasshopper is extended via Python scripting to enable integration with JuPedSim \ref{fig:rhinoandgrasshopper}. An assembled Python 3.13 environment is used to write the scripts that map Rhino/Grasshopper geometry to JuPedSim input scenes and to extract trajectories and scene metadata from JuPedSim outputs for analysis. We didn't use Rhino before version 9 WIP because it is the first version that supports Python 3.13 (Rhino 8's Python is 3.9), which is required by JuPedSim.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Rhino&Grasshopper.png}
+    \caption{Rhino and Grasshopper}
+    \label{fig:rhinoandgrasshopper}
+\end{figure}
+
+\section{System Integration}
+\subsection{Objectives and Framework}
+Standard JuPedSim uses the Shapely package for geometry input and visualization, which limits efficiency when generating multiple experimental prototypes and offers limited parametric control. This study based on Rhino3D's parametric modeling environment,using a Python script \ref{fig:pythonscript} to integrate geometric data and call JuPedSim's API to run the simulation, in order to conveniently generate prototypes and systematically control parameters during each experiment.
+
 \subsection{Input and Output Description }
-Input: Office geometry (polylines representing contours, doors, corridors, etc.), initial agent positions (Grasshopper point sets), and scene parameters (island table layout, corridor width, number of exits, door widths, etc.). 
-\\Output: Each simulation round outputs the raw trajectory data as a SQLite file, while derived metrics such as speeds, congestion events, and other diagnostics are computed from these trajectories for subsequent analysis. Metadata (version, environment, random seed, etc.) are recorded as part of the analysis workflow.
+As the figure \ref{fig:pipeline} shows, Geometric inputs define the physical space through polyline(stored as point list) representations of the office layout, including office space boundaries that establish the walkable area, obstacle geometries that represent furniture or colunms, and exit locations. Additionally, the system requires agent positioning data provided as a point list that specifies the initial locations where pedestrians will be placed before the simulation. 
+
+Each simulation run generates an individual SQLite file that stores all simulation results. The file stores trajectory data including frames, agent id, agent coordinates per frame, and orientation vectors per frame. The file also preserves simulation metadata and geometric data of the walkable area, allowing subsequent analysis and playback.'
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{puffin}
+    \includegraphics[width=\textwidth]{PythonScript.png}
+    \caption{Python Script in Grasshopper for JuPedSim Integration}
+    \label{fig:pythonscript}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{DataPipeline.svg}
     \caption{Data Pipeline}
     \label{fig:pipeline}
 \end{figure}

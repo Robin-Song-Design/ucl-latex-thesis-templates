@@ -119,12 +119,14 @@ Based on the experiments described in the last section, we selected 1.2m under s
 According to the heat maps \ref{fig:tet_vs_room_corridor_coupling}, The horizontal axis represents corridor gate width, and the vertical axis represents room door width, with both parameters taking values of 1.0, 1.2, 1.4, and 1.6 m. For each combination, multiple independent simulations were conducted while maintaining agents numbers, layout, and model parameters. The mean and standard deviation of total evacuation time(TET) were calculated and presented as the color variation.
 
 Among all combinations, the shortest TET was 69.7 s, which occurs when corridor width is 1.4m and room door width is 1.2m. The longest TET was 89.5 s, showing when corridor width is 1.0m and room door width is 1.4m. When corridor gate width increased to 1.4 m and above, the TET for all combinations clearly converged to approximately 70-72 s, with standard deviations generally decreasing to about 1-2 s, indicating that the system is getting stable. Especially significant is that when the corridor gates were narrow (1.0 or 1.2 m), increasing room door width alone significantly slowed evacuation time. This phenomenon is consistent with merging conflicts and queue backtracking observed in speed-trajectory diagrams, and this mechanism will be further explained in conjunction with speed-trajectory diagrams in subsequent paragraphs.
-\begin{figure}[h]
+\begin{figure}[h]v
     \centering
     \includegraphics[width=\textwidth]{tet_seaborn_heatmap_multiroom.png}
     \caption{TET vs Room-Corridor Coupling}
     \label{fig:tet_vs_room_corridor_coupling}
 \end{figure}
+
+Figure \ref{fig:width_combo_1.0_x} shows that when room door width is 1.0m, the spatial distribution of congestion evolves as the corridor gate width gradually widens from 1.0m to 1.6m, and directly correspond to the changes in the mean TET and standard deviation of the first row of the heat map. Under the combo of 1.0m and 1.0m, large areas of low-speed zones appear near the main corridor and the merging points. Backtracking several meters upstream, this indicates frequent parallel conflicts, long and continuous queues, which precisely correspond to the relatively high evacuation time in the heat map. After increasing the corridor door to 1.2 meters, the red band shrank significantly. The slow points were mainly compressed at corners and threshold positions. The green continuous section on the main passage became longer, and the number of lane changes and confliction decreased. Therefore, the total time dropped down greatly. When further increased the door width to 1.4m, the slow zone continues to be close to the edge and shortens, forming a stable multi-lane queue near the convergence point. The passage almost no longer causes visible backtracking to the upstream, which is consistent with the heat map reaching the shortest time within the row in this column. When further widened to 1.6m, the trajectory shape is already very close to 1.4m. The low-speed points are scattered and limited to individual geometric corners. The system performance is more predictable, thereby resulting in a smaller standard deviation. Meanwhile, as the door remains the upper limit of the system's supply, the additional widening of the corridor door no longer leads to an increase in effective throughput. As a result, the average value only slightly rises from 1.4m, and the overall situation remains at the same stable level.
 
 \begin{figure} [H]
     \centering
@@ -156,6 +158,8 @@ Among all combinations, the shortest TET was 69.7 s, which occurs when corridor 
     \caption{Speed and Trajectories for Room Door Width 1.0m}
     \label{fig:width_combo_1.0_x}
 \end{figure}
+
+According to Figure \ref{fig:width_combo_1.2_x}, keep the room door width as 1.2 m, if the corridor gate width is only 1.0 m, a large low-speed zone will appear before the merging points, with queues continuously backtracking upstream. Because the downstream release capacity is restricted by the gate width, agents can exit smoothly through the room doors, but are forced to stagnate before the narrow corridor gates, which causes longer evacuation time. As it comes to 1.2m, the low-speed zone is compressed near the gate, and the green zone in the main corridor become longer, significantly reducing the total evacuation time. When the corridor gate width reaches 1.4m, the downstream release capacity essentially matches the supply from upstream, backtracking almost disappears and only several low-speed points occur at some corners, therefore the evacuation time drops to its lowest and variation among the runs converges. Even when the corridor gate width is widened to 1.6m, the agents flow pattern is almost the same as that at 1.4m, because the real limitation is the 1.2m room door width, so the TET will not decrease more. However, since congestion becomes more difficult to form, results are more stable and the standard deviation will decrease further. To summerize, when the room door width is 1.2 m, simply increasing the corridor door from 1.0 m to 1.4 m can basicly eliminate queuing, allow the mean TET to drop rapidly and help the system to become stable, while continued widening would not benefit more in stability.
 
 \begin{figure}[h]
     \centering
@@ -189,6 +193,8 @@ Among all combinations, the shortest TET was 69.7 s, which occurs when corridor 
     \label{fig:width_combo_1.2_x}
 \end{figure}
 
+When the room door width is fixed at 1.4m \ref{fig:width_combo_1.4_x}, compared to 1.2 m \ref{fig:width_combo_1.2_x}, both configurations share common characteristics when the corridor gate is only 1.0m: upstream supply significantly exceeds downstream discharge capacity, both form large low-velocity zones before convergence accompanied by backflow/stagnation, resulting in the highest evacuation times and fluctuations with the most unstable system performance. The difference is that the 1.4 m configuration has stronger upstream supply, thus showing more pronounced response to the 1.0 m bottleneck, with higher peak TET and standard deviation. As the corridor gate increases to 1.2 m, both configurations show compressed low-velocity zones, longer continuous green sections in the main pathway, reduced backflow, decreased average times and converging fluctuations. However, the 1.4 m configuration maintains higher residual fluctuations than the 1.2 m configuration due to more abundant supply. When the corridor gate reaches 1.4 m, both achieve basic matching between downstream release capacity and upstream supply: trajectories become more smooth, low-speed points only briefly occur at corners, backtracking disappears, and TET enters a lower and more stable range. When the corridor gate width is further widened to 1.6 m, the flow patterns of both configurations remain nearly identical to those at 1.4 m, both limited by the room door width becoming the bottleneck. Average evacuation time show little change but stability further improves, with the 1.4 m room door configuration achieving lower standard deviation after stabilization due to its stronger baseline supply.
+
 \begin{figure}[h]
     \centering
         \begin{subfigure}[b]{.45\linewidth}
@@ -220,6 +226,18 @@ Among all combinations, the shortest TET was 69.7 s, which occurs when corridor 
     \caption{Speed and Trajectories for Room Door Width 1.4m}
     \label{fig:width_combo_1.4_x}
 \end{figure}
+
+For the case of 1.6m room door width \ref{fig:width_combo_1.6_x}, based on previous conclusions, the larger the room door, the greater the upstream supply of crowd, leading to more obvious congestion and normally resulting in higher evacuation times. What is interesting, under the same 1.0m corridor gate width condition (first column of the heat map \ref{fig:tet_vs_room_corridor_coupling}), the TET for the 1.6m \ref{fig:width_combo_1.6_1.0m} room door width is however lower than that \ref{fig:width_combo_1.4_1.0m} for the 1.4m one.
+
+After reviewing the simulation playback, we discovered that the key lies in the differences in congestion patterns: under the 1.4 m room door width condition, it is more likely for four pedestrians to become mutually stuck \ref{fig:four_agents_stuck}, leading to flow interruption and significantly slowing down the overall evacuation. After we reviewed the Total Evacuation Time (TET) from 5 simulations, the maximum was 98.7 s and the minimum was 84 s, showing a very large fluctuation range. Therefore, we can only preliminarily conclude that the 1.4 m room door width more easily triggers chaotic congestion patterns. This phenomenon further indicates that the influence of building geometric elements on evacuation time is highly complex, and specific conclusions still need to be verified through more experiments and large dataset in the future.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{FourAgentsStuck.png}
+    \caption{Four Agents Stuck at the Corridor Gate}
+    \label{fig:four_agents_stuck}
+\end{figure}
+
 
 \begin{figure}[h]
     \centering
