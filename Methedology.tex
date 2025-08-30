@@ -64,7 +64,7 @@ Each simulation run generates an individual SQLite file that stores all simulati
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{DataPipeline.svg}
+    \includegraphics[width=\textwidth]{DataPipeline}
     \caption{Data Pipeline}
     \label{fig:pipeline}
 \end{figure}
@@ -72,34 +72,48 @@ Each simulation run generates an individual SQLite file that stores all simulati
 \section{Experimental design}
 
 \subsection{Prototype Scales}
-Small prototype \ref{fig:small}: Focus on the preliminary effects of layout on evacuation paths and times, with rapid iteration through smaller geometric dimensions. To eliminate the influence of multiple corridors, we extended the bottom wall to the leftmost and bottommost sides, keeping only the Main corridor while controlling its width.
+Small prototype \ref{fig:small} focus on the preliminary effects of layout on evacuation paths and times. To eliminate the influence of multiple corridors, we extended the bottom wall to the leftmost and bottommost sides, keeping only the Main corridor while controlling its width.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Small.jpg}
-    \caption{Small Prototype}
+    \caption{Small Prototype Primitive}
     \label{fig:small}
 \end{figure}
-\\Big prototype \ref{fig:big}: Introduce higher-level issues such as door width coupling and multi-room nesting, testing the coupling effects at scales closer to actual office spaces.
+
+Big prototype \ref{fig:big} introduces higher-level issues such as bottleneck limitations and coupling effects of room door width and corridor gate width, testing at a scale closer to actual office spaces.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Big.jpg}
-    \caption{Big Prototype}
+    \caption{Big Prototype Primitive}
     \label{fig:big}
 \end{figure}
 
 \subsection{Randomness and Replication}
-Each parameter configuration is repeated 5 times, with initial positions randomly sampled from a Grasshopper point set to reduce the impact of randomness on the results.
+Each parameter configuration is repeated 5 runs, and each run is stored as an individual SQLite file. For each run, initial agent positions are randomly moved by a method, which can be described by the following pseudo code:
+\begin{listing}[H]
+    \caption{Random Start Position Function}
+    \label{Algo:randompoint}
+    \begin{algorithmic}[1]
+        \Function {$RandomPoint$}{point, seed}
+        \State $random \gets RandomNumberGenerator(seed)$
+        \State $randomX \gets random.uniform(-0.1, 0.1)$
+        \State $randomY \gets random.uniform(-0.1, 0.1)$
+        \State $newPoint \gets (point.X + randomX, point.Y + randomY)$
+        \State \Return $newPoint$
+        \EndFunction
+    \end{algorithmic}
+\end{listing}
 
 \subsection{Small Prototype Variables}
-Island Table Layout \ref{fig:abc}: Three variants A, B, and C represent the internal furniture configuration's representative parameters.
+Table Layout \ref{fig:abc} includes three variants A, B, and C to represent the internal furniture configuration.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{abc.png}
-    \caption{Island Table Layout}
+    \caption{Three Types of Table Layout}
     \label{fig:abc}
 \end{figure}
 
-Corridor Width \ref{fig:corridorwidth}: 0.8 m,1.0m, 1.2 m, 1.4m, 1.6 m, 1.8m, 2.0 m, 2.2m, 2.4 m to explore the sensitivity of corridor width on path formation and congestion.
+Corridor Width \ref{fig:corridorwidth} ranges from 0.8 m to 2.4 m (step 0.2 m), in order to systematically vary the available passage space, where width is measured as the perpendicular distance from the bottom edge of the upper furniture to the top edge of the lower furniture.  
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{WidthCompare.png}
@@ -107,7 +121,7 @@ Corridor Width \ref{fig:corridorwidth}: 0.8 m,1.0m, 1.2 m, 1.4m, 1.6 m, 1.8m, 2.
     \label{fig:corridorwidth}
 \end{figure}
 
-Exit Configuration \ref{fig:ExitConfiguration}: Single exit and double exit, comparing the impact of different exit quantities on path formation and congestion.
+Besides the single exit configuration, double exit arrangements are served as an add-on experiments metric across all corridor width and table layout variables. This parallel design allows comparison of flow and congestion patterns in different path choices. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{abc2.png}
@@ -116,10 +130,12 @@ Exit Configuration \ref{fig:ExitConfiguration}: Single exit and double exit, com
 \end{figure}
 
 \subsection{Big Prototype Variables}
-We firstly conducted a primitive simulation on the original big prototype. And then we designed two main variable groups based on the primitive simulation results:
-\\
-Gate width before the exit(the bottleneck) \ref{fig:4ExitsGate}:
-\(g\in[1.0,1.6]\text{m}\) is to assess sensitivity of early queuing, discharge rate, and lane merging.
+The study firstly conducted a primitive simulation on the original big prototype. And then based on the initail trajectories, we designed two main variable groups:
+
+Gate width before the exit(the bottleneck) \ref{fig:4ExitsGate} is varied from 1.0 m to 1.6 m (steps 0.2 m), in order to systematically assess the affects of early queuing, discharging, and lane merging. The range is chosen based on common architectural standards for exit widths \cite{linSimulatingEffectsGate2023}, ensuring that the variations are realistic to typical office environments. 
+
+According to the primitive simulation \ref{fig:bigprimitive}, with red curves in the figure representing agent trajectories from all the five runs, the trajectories show convergence into three main corridor segments: corridor a (upper), corridor b (lower-left), and corridor c (lower-right). To quantify the combined effects of room entrance(blue) and corridor gate(red) on the flow distribution and congestion of these main passages, we conducted a experiment using room door width and corridor gate width as core variables, ranging from 1.0 m to 1.6 m (step 0.2 m). For each combination, we evaluated its impact on queuing, throughput capacity, and the merging and conflict patterns. 
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]
@@ -127,7 +143,7 @@ Gate width before the exit(the bottleneck) \ref{fig:4ExitsGate}:
     \caption{Change of the gates width before the exits}
     \label{fig:4ExitsGate}
 \end{figure}
-\\Room-Corridor Coupling: According to the primitive simulation \ref{fig:bigprimitive}, with red lines in the figure representing agent trajectories from all the five runs, the trajectories show convergence into three main corridor segments: corridor a (upper), corridor b (lower-left), and corridor c (lower-right). To quantify the combined effects of "room entrance(blue) and corridor gate(red) width" on the flow distribution and congestion of these main passages, we conducted a full factorial cross-experiment using room door width and corridor gate width entering a/b/c as core independent variables: room door width and gate width in range of {1.0, 1.2, 1.4, 1.6}m. For each combination, we evaluated its impact on early queuing, throughput capacity, and the merging and conflict patterns of the three corridors. 
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{trajectory_overlay_layout_CorridorAnalysis_Basic.png}
@@ -135,42 +151,69 @@ Gate width before the exit(the bottleneck) \ref{fig:4ExitsGate}:
     \label{fig:bigprimitive}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{ExperimentalDesign.png}
+    \caption{Experimental Design}
+    \label{fig:experimentaldesign}
+\end{figure}
+
 \section{Agents and Model Settings}
 
-This section focuses on clearly setting and recording the attributes of agents (pedestrians), the initial distribution, and the key parameters of the Social Force Model (SFM) within the JuPedSim framework, ensuring comparability and repeatability between different configurations.
+The built-in Social Force Model of JuPedSim is used as the simulation model, whose defult parameters are set as follows:
 
-\subsection{Agent Attributes and Initial Conditions}
+\begin{listing}[H]
+    \caption{Social Force Model Parameters}
+    \label{lis:SFMparameters}
+    \begin{minted}[firstnumber=1,breaklines]{Python}
+        SocialForceModel(
+            body_force: float = 120000, 
+            friction: float = 240000)
+    \end{minted}
+\end{listing}
 
-Initial Agent Quantity and Distribution: The total number of agents is set in the Grasshopper/JuPedSim scene input based on the scale of the scenario, with the initial distribution (Grasshopper point set) controlling the initial quantity and spatial distribution.
-\\Initial Position Mapping: The point set of Grasshopper is mapped to the initial coordinates of the agents, ensuring that the randomness of initial positions between different configurations is controllable and that repeated experiments can be replicated.
-\\Goals and Behavioral Tendencies: Defaults are uniformly set, but in scenarios with multiple entrances, agents tend to choose the shortest path.
+These include repulsive forces between agents, repulsive forces against obstacles, and response intensity to queuing and group aggregation. The initial settings adopt the official recommended values from JuPedSim.
 
-\subsection{Social Force Model Parameters}
+And agent parameters are adjusted to fit the experiments, which are set as follows:
 
-Model Framework: The built-in Social Force Model of JuPedSim is used as the core microscopic simulation model.
-\\Desired Speed: 0.8 m/s is set as the default value, with sensitivity analysis within a range (e.g., 0.6-1.0 m/s) conducted as needed.
-\\Interaction Force Parameters: These include repulsive forces between agents, repulsive forces against obstacles, and response intensity to queuing and group aggregation. The initial settings adopt the official recommended values from JuPedSim.
-\\Obstacle Handling and Boundary Conditions: The obstacle force scale is set to 1000 to balance the resistance to obstacles in complex scenarios, preventing excessive suppression of agent movement. Boundary conditions follow the wall and exit definitions in the geometric input of the scene.
+\begin{listing}[H]
+    \caption{Social Force Model Agent Parameters}
+    \label{lis:SFMAgentparameters}
+    \begin{minted}[firstnumber=1,breaklines]{Python}
+        SocialForceModelAgentParameters(
+            position: tuple[float, float] = agent_start_postion, 
+            orientation: tuple[float, float] = (0.0, 0.0),
+            journey_id: int = assigned_journey_id, 
+            stage_id: int = closet_exit_id, 
+            velocity: tuple[float, float] = (0.0, 0.0), 
+            mass: float = 80.0, 
+            desired_speed: float = 0.8, 
+            reaction_time: float = 0.5, 
+            agent_scale: float = 2000, 
+            obstacle_scale: float = 1000, 
+            force_distance: float = 0.08, 
+            radius: float = 0.3)
+    \end{minted}
+\end{listing}
+
+The total number of agents is set in the Rhino3D scene based on the seat quantity of the two scale prototypes. In our case, the small prototype has 18 agents, and the big prototype has 57 agents. The point list of Grasshopper is mapped to the initial positions of the agents, with the random start position function \ref{Algo:randompoint}.
+
+In scenarios with multiple entrances, agents tend to choose the shortest path. To simulate the real behavior of people choosing the nearest exit, we suppose that each agent would choose the $\text{straight-line distance}$ to the nearest exit as their target, and set the $\text{stage\_id}$ parameter accordingly. Because when we are in a building, we can not accurately calculate the distance to exits, but we can roughly judge which exit is closer.
+
+The defult desired speed of JuPedSim is 0.8m/s, and this study also trys to find a fitable desired speed. Helbing et al. discovered the "faster is slower" effect. When desired speeds exceed 1.5 m/s, it reduces evacuation time by 25\% \cite{helbingSimulatingDynamicalFeatures2000}. We firstly tested the 0.8-1.5 m/s speed range according to Helbing's theoretical predictions, and agents at desired speed of 0.8 m/s showing more orderly behavior. Because this speed falls within normal walking conditions, avoiding the disorderly pushing phenomena triggered by high desired speeds. Therefore, we keep the desired speed as defult.
+
+The obstacle force scale is set to 1000, in order to balance the resistance to obstacles in complex scenarios, preventing excessive suppression of agent movement. Boundary conditions follow the wall and exit definitions in the geometric input of the scene.
 
 \section{Data collection and Analysis}
 
-\subsection{Data Output and Storage}
-Each simulation produces an independent SQLite database file, recording agent trajectories, speeds, positions, and scene metadata for easy playback and offline analysis.
 \subsection{Data Reading and Processing}
-Use JupyterLab and Python to read SQLite files (sqlite3), organizing the data into an analyzable structure (DataFrame), and aggregating and statistics on time steps, agent attributes, congestion indicators, etc.
+The study uses JupyterLab and Python to read SQLite files, organizing the data into an analyzable structure, and visualizing the data by tables, line charts, speed-trajectory diagrams and heat maps.
 
 \subsection{Indicators}
-\subsubsection{Primary Indicators}
-Total Evacuation Time (TET): The overall comparison of evacuation performance under various configurations, which can be presented by evacuation time tables and line charts.
-\\
-Path Distribution Characteristics: Visualized through trajectory patterns in speed-trajectory diagrams.
-\\
-Congestion Hotspot Distribution (Hot Zones/Density): The location and extent of low-speed clustering and congestion areas in speed-trajectory diagrams, which equivalently display congestion hotspots and their migration patterns.
-\\
-\subsubsection{Secondary Indicators}
-Path Formation Patterns: Identification of single-lane and double-lanes flow, lane convergence, bottleneck queuing patterns, and their locations based on the trajectory morphology analysis.
-\\
-Repeated Interval Fluctuation (Robustness): Line overlap/error band performance across multiple runs under identical parameters, expressed as minimum-maximum ranges or mean ± deviation to indicate fluctuation levels.
+
+The main indicators for checking evacuation performance include the Total Evacuation Time (hereinafter referred to as TET),Path fistribution and Congestion hotspot distribution. Total Evacuation Time is the most important measure for comparing how evacuations perform in different settings, usually shown through time tables and line charts. Path distribution show how people move during evacuation through movement patterns in speed-trajectory diagrams, giving clear information about how evacuation flows develop and spread during the evacuation process. Also, Congestion Hotspot Distribution analysis focuses on finding where and how much slow-moving crowds and crowded areas appear in speed-movement diagrams, which also shows crowded spots and tracks how they move during evacuation.
+
+Besides, the rebustness of the evacuation performance is also considered, which is reflected in the fluctuation range of TET under multiple runs of the same parameter configuration. A smaller fluctuation range indicates a more stable evacuation performance. 
 
 \subsection{Results Presentation and Visualization}
-This study uses Total Evacuation Time (TET) as the primary evaluation metric. For each parameter level (such as door width, corridor width, and exit configuration), we calculate the mean TET and fluctuation range from multiple independent simulations, and conduct direct comparisons and ranking based on these results. To identify potential threshold effects, we observe slope changes in evacuation time line graphs, record parameter intervals where significant inflection points or plateau segments occur, and select representative parameter points to compare with velocity-trajectory diagrams to explain the mechanistic differences in "convergence-merging-queuing" patterns as parameters vary. To ensure the stability of conclusions, each parameter combination incorporates randomized agent initial positions with five repeated experiments.
+This study uses Total Evacuation Time (TET) as the primary evaluation metric. For each parameter level (such as door width, corridor width, and exit configuration), we calculate the mean TET and fluctuation range from multiple independent simulations, and conduct direct comparisons and ranking based on these results. To identify potential threshold effects, we observe slope changes in evacuation time line graphs, record parameter intervals where significant inflection points or plateau segments occur, and select representative parameter points to compare with speed-trajectory diagrams to explain the mechanistic differences in congestion patterns as parameters vary. 

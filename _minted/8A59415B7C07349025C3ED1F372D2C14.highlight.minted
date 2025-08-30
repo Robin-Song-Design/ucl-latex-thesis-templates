@@ -1,0 +1,15 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+        \PYG{n}{SocialForceModelAgentParameters}\PYG{p}{(}
+            \PYG{n}{position}\PYG{p}{:} \PYG{n+nb}{tuple}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{,} \PYG{n+nb}{float}\PYG{p}{]} \PYG{o}{=} \PYG{n}{agent\PYGZus{}start\PYGZus{}postion}\PYG{p}{,}
+            \PYG{n}{orientation}\PYG{p}{:} \PYG{n+nb}{tuple}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{,} \PYG{n+nb}{float}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{l+m+mf}{0.0}\PYG{p}{),}
+            \PYG{n}{journey\PYGZus{}id}\PYG{p}{:} \PYG{n+nb}{int} \PYG{o}{=} \PYG{n}{assigned\PYGZus{}journey\PYGZus{}id}\PYG{p}{,}
+            \PYG{n}{stage\PYGZus{}id}\PYG{p}{:} \PYG{n+nb}{int} \PYG{o}{=} \PYG{n}{closet\PYGZus{}exit\PYGZus{}id}\PYG{p}{,}
+            \PYG{n}{velocity}\PYG{p}{:} \PYG{n+nb}{tuple}\PYG{p}{[}\PYG{n+nb}{float}\PYG{p}{,} \PYG{n+nb}{float}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{l+m+mf}{0.0}\PYG{p}{),}
+            \PYG{n}{mass}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{80.0}\PYG{p}{,}
+            \PYG{n}{desired\PYGZus{}speed}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{0.8}\PYG{p}{,}
+            \PYG{n}{reaction\PYGZus{}time}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{0.5}\PYG{p}{,}
+            \PYG{n}{agent\PYGZus{}scale}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mi}{2000}\PYG{p}{,}
+            \PYG{n}{obstacle\PYGZus{}scale}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mi}{1000}\PYG{p}{,}
+            \PYG{n}{force\PYGZus{}distance}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{0.08}\PYG{p}{,}
+            \PYG{n}{radius}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mf}{0.3}\PYG{p}{)}
+\end{MintedVerbatim}

@@ -1,0 +1,5 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+        \PYG{n}{SocialForceModel}\PYG{p}{(}
+            \PYG{n}{body\PYGZus{}force}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mi}{120000}\PYG{p}{,}
+            \PYG{n}{friction}\PYG{p}{:} \PYG{n+nb}{float} \PYG{o}{=} \PYG{l+m+mi}{240000}\PYG{p}{)}
+\end{MintedVerbatim}
