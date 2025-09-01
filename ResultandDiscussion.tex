@@ -6,6 +6,27 @@
     \caption{TET vs Corridor Width}
     \label{fig:tet_vs_width}
 \end{figure}
+
+\begin{table}[ht]
+    \caption{Table of TET (second) for Layout A,B,C,A2,B2,C2} % title of Table
+    \centering % used for centering table
+    \label{tab:tettable}
+    \begin{tabular}{c c c c c c c} % centered columns (7 columns)
+        \hline % inserts single horizontal line
+        Width(m) &  A  & B     & C     & A2    & B2    & C2  \\ [0.5ex] % headers
+        \hline % inserts single horizontal line
+        1.0 & 38.22 & 42.30 & 33.70 & 19.72 & 19.68 & 16.58 \\ [1ex]
+        1.2 & 30.42 & 37.00 & 30.74 & 17.04 & 19.94 & 15.22 \\ [1ex]
+        1.4 & 27.80 & 29.96 & 27.22 & 16.52 & 18.70 & 14.46 \\ [1ex]
+        1.6 & 26.42 & 26.66 & 28.04 & 16.02 & 19.00 & 14.34 \\ [1ex]
+        1.8 & 25.28 & 23.46 & 25.66 & 15.80 & 19.26 & 14.42 \\ [1ex]
+        2.0 & 22.74 & 23.24 & 25.38 & 15.66 & 18.66 & 14.34 \\ [1ex]
+        2.2 & 21.50 & 23.22 & 24.96 & 15.48 & 17.80 & 13.72 \\ [1ex]
+        2.4 & 21.54 & 22.94 & 21.38 & 15.50 & 17.52 & 13.84 \\ [1ex]
+        \hline
+    \end{tabular}
+\end{table}
+
 The results of this study \ref{fig:tet_vs_width} indicate that the wider the corridor, the shorter the TET, but the returns from widening do not increase linearly. Within the range of approximately 1.0-1.6/1.8 m, even a slight increase in width can lead to a significant reduction in time; when the width approaches or exceeds 2.0 m, continued widening still provides benefits, but the magnitude is no longer substantial. This aligns with everyday experience: in very crowded spaces, even a small additional passageway can help disperse the flow of people; however, when the space is not particularly crowded to begin with, adding more passageway does not yield such noticeable improvement.
 
 \subsection{Speed and Trajectories Analysis}
@@ -100,6 +121,22 @@ In the Big Prototype scenario, according to the figure \ref{fig:tet_vs_Bottlenec
     \label{fig:tet_vs_Bottleneck}
 \end{figure}
 
+\begin{table}[ht]
+    \caption{Table of TET vs Bottleneck Width} % title of Table
+    \centering % used for centering table
+    \label{tab:tettable_bottleneck}
+    \begin{tabular}{c c} % centered columns (2 columns)
+        \hline % inserts single horizontal line
+        Width(m) & TET \\ [0.5ex] % headers
+        \hline % inserts single horizontal line
+        1.0  & 84.86 \\ [1ex]
+        1.2  & 74.86 \\ [1ex]
+        1.4  & 72.92 \\ [1ex]
+        1.6  & 70.22 \\ [1ex]
+        \hline
+    \end{tabular}
+\end{table}
+
 The speed trajectory diagrams are consistent with the aforementioned trends. At the bottleneck width of 1.0 m \ref{fig:speed_trajectory_layout_1.0m}, the low-speed red zones significantly extend backward, showing queuing phenomena. Due to the queuing phenomenon, agents exhibit obvious convergence behavior at an early stage, beginning to merge lanes with frequent lateral interactions and substantial velocity fluctuations. When the width increases to 1.2 m \ref{fig:speed_trajectory_layout_1.2m}, the low-speed zone noticeably diminishs and becomes concentrated within several meters of the room exits, as well as the merging points be closer to the room exit. The agents' queuing phenomenon visibly disappears during actual simulation observation. On expansion to 1.4 m \ref{fig:speed_trajectory_layout_1.4m} and 1.6 m \ref{fig:speed_trajectory_layout_1.6m} , the low-speed zone continues to diminish and remains close to the doorway, with only brief delays occurring during peak arrival periods, more uniform velocity distribution, and reduced lateral conflicts. The multiple simulations show that the main corridor and overall paths leading to each exit remain consistent, while width variations not triggering large-scale route diversions. The most significant differences are concentrated in the flow microstructure within the final several meters of the exit area.
 
 \begin{figure}[h]
@@ -140,6 +177,25 @@ Based on the experiments described in the last section, we selected 1.2m under s
 According to the heat maps \ref{fig:tet_vs_room_corridor_coupling}, The horizontal axis represents corridor gate width, and the vertical axis represents room door width, with both parameters taking values of 1.0, 1.2, 1.4, and 1.6 m. For each combination, multiple independent simulations were conducted while maintaining agents numbers, layout, and model parameters. The mean and standard deviation of TET were calculated and presented as the color variation.
 
 Among all combinations, the shortest TET was 69.7 s, which occurs when corridor width is 1.4m and room door width is 1.2m. The longest TET was 89.5 s, showing when corridor width is 1.0m and room door width is 1.4m. When corridor gate width increased to 1.4 m and above, the TET for all combinations clearly converged to approximately 70-72 s, with standard deviations generally decreasing to about 1-2 s, indicating that the system is getting stable. Especially significant is that when the corridor gates were narrow (1.0 or 1.2 m), increasing room door width alone significantly slowed evacuation time. This phenomenon is consistent with merging conflicts and queue backtracking observed in speed-trajectory diagrams, and this mechanism will be further explained in conjunction with speed-trajectory diagrams in subsequent paragraphs.
+
+\begin{table}[ht]
+    \caption{TET vs Room-Corridor Coupling}
+    \centering 
+    \begin{tabular}{c|c|c|c|c} 
+        \hline
+        Width1 & Width2 = 1.0 & Width2 = 1.2 & Width2 = 1.4 & Width2 = 1.6 \\ 
+        \hline
+        1.0 & 77.00 & 72.32 & 70.98 & 72.60 \\ 
+        \hline
+        1.2 & 81.32 & 74.16 & 69.66 & 70.82 \\
+        \hline
+        1.4 & 87.82 & 74.26 & 71.38 & 70.70 \\
+        \hline
+        1.6 & 82.10 & 80.02 & 71.48 & 70.52 \\
+        \hline
+    \end{tabular}
+    \label{tab:tet_mean_values}
+\end{table}
 
 \begin{figure}[h]
     \centering
@@ -253,13 +309,6 @@ For the case of 1.6m room door width \ref{fig:width_combo_1.6_x}, based on previ
 
 After reviewing the simulation playback, we discovered that the key lies in the differences in congestion patterns: under the 1.4 m room door width condition, it is more likely for four pedestrians to become mutually stuck \ref{fig:four_agents_stuck}, leading to flow interruption and significantly slowing down the overall evacuation. After we reviewed the TET from 5 simulations, the maximum was 98.7 s and the minimum was 84 s, showing a very large fluctuation range. Therefore, we can only preliminarily conclude that the 1.4 m room door width more easily triggers chaotic congestion patterns. This phenomenon further indicates that the influence of building geometric elements on evacuation time is highly complex, and specific conclusions still need to be verified through more experiments and large dataset in the future.
 
-\begin{figure}
-    \centering
-    \includegraphics[width= 0.5 \linewidth]{FourAgentsStuck.png}
-    \caption{Four Agents Stuck at the Corridor Gate}
-    \label{fig:four_agents_stuck}
-\end{figure}
-
 \begin{figure}[h]
     \centering
         \begin{subfigure}[b]{.45\linewidth}
@@ -290,4 +339,11 @@ After reviewing the simulation playback, we discovered that the key lies in the 
 
     \caption{Speed and Trajectories for Room Door Width 1.6m}
     \label{fig:width_combo_1.6_x}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= 0.5 \linewidth]{FourAgentsStuck.png}
+    \caption{Four Agents Stuck at the Corridor Gate}
+    \label{fig:four_agents_stuck}
 \end{figure}

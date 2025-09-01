@@ -31,11 +31,12 @@
 \extradeclaration{}
 
 \maketitle
-\makedeclaration
 
 \begin{abstract} % 300 word limit
 
-This study systematically investigates how internal spatial configurations in office spaces — specifically desk layout, corridor width, number of exits, and door width — influence the efficiency of orderly evacuation under fixed building constraints. We conduct multi-scale agent-based simulations within a coupled Rhino 9 and JuPedSim workflow, constructing two prototypes (Small and Big) and comparing different internal layouts (A, B, C), various corridor and door width combinations, and single vs. double exits configuration. Trajectory data are used to derive metrics such as speed, path length, Total Evacuation Time (TET), and congestion hotspots. Results indicate that internal layout significantly affects congestion hotspots and path choices, with door-corridor width coupling showing threshold effects and scale dependence, especially in the Big prototype. Spatial patterns are analyzed via speed and trajectory diagrams; robustness is evaluated via standard deviation from repeated simulation runs. The results can help architects and engineers to find the key elements for optimizing office layouts for safety and efficiency.
+With the development of modern office spaces towards higher density, the efficiency of emergency evacuation has become a key factor in ensuring life safety. Existing research mostly focuses on the simulation accuracy of pedestrian models or the independent influence of single parameters, while systematic studies on the variable geometric layout parameters within office spaces and their coupling effects are still insufficient. Therefore, this study systematically explores how internal spatial parameters, such as furniture layout, corridor and door width, and the number of exits, affects evacuation efficiency. The study adopts an agent-based modeling approach and conducts simulation experiments on two office prototypes of different scales in a parametric workflow integrating Rhino and JuPedSim, using the social force model. Quantitative evaluations are made through indicators such as total evacuation time (TET) and congestion hotspots. The research finds that internal layout parameters have a significant nonlinear impact on evacuation efficiency: increasing the width of corridors or exits shows a clear "diminishing marginal benefit" effect; at the same time, there is a strong coupling effect among parameters. When downstream channels are narrow, blindly widening the doors of upstream rooms will instead aggravate congestion and prolong evacuation time. The research conclusion confirms that the internal geometric configuration of office spaces is a key factor affecting evacuation efficiency, and its optimization requires a comprehensive consideration of the thresholds and coupling relationships among parameters, rather than maximizing a single parameter. This study provides parametric design basis for architects, and future research can validate the simulation with real data and consider more dynamic factors.
+
+\textbf{Key Words:} Emergency evacuation, office layout, agent-based modeling, social force model, pedestrian dynamics, parametric design.
 
 \end{abstract}
 
@@ -72,17 +73,19 @@ This study systematically investigates how internal spatial configurations in of
 %     \end{quote}
 % \end{impactstatement}
 
-\begin{acknowledgements}
-    Acknowledge all the things!
-\end{acknowledgements}
+% \begin{acknowledgements}
+%     First of all, I would like to express my most sincere gratitude to my supervisor, Petros Koutsolampros. From the conception of the topic to the final completion of the thesis, he has always provided me with insightful guidance and valuable suggestions. His rigorous academic attitude and profound professional knowledge helped me overcome many challenges in the research. At the same time, I would also like to thank my technical supervisor, Sherif Tarabishy, who gave me crucial and valuable advice when I was setting up the workflow between Rhino and JuPedSim, which was essential for the technical realization of this research. 
+
+%     I also sincerely want to thank my family and my girlfriend. During my master's studies, they have always been my strongest support. Their understanding and support have been the foundation for me to focus on my studies without any distractions.
+% \end{acknowledgements}
 
 \setcounter{tocdepth}{2}
 % Setting this higher means you get contents entries for
 %  more minor section headers.
 
 \tableofcontents
-\listoffigures
-\listoftables
-\renewcommand\listoflistingscaption{List of source codes}
-\listoflistings
+% \listoffigures
+% \listoftables
+% \renewcommand\listoflistingscaption{List of source codes}
+% \listoflistings
 
